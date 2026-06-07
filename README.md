@@ -29,7 +29,7 @@ StockWise es una aplicación web full-stack que permite gestionar el inventario 
 
 ## 🤖 IA Utilizada
 
-Este proyecto fue desarrollado con la asistencia de **Claude (Anthropic)** a través de **OpenCode IDE** como herramienta de pair programming. La IA colaboró en:
+Este proyecto fue desarrollado con la asistencia de **Claude (Anthropic)** a través de **Github Copilot** como herramienta de pair programming. La IA colaboró en:
 
 - Arquitectura inicial y diseño del schema de base de datos
 - Generación de Server Actions y Server Components
