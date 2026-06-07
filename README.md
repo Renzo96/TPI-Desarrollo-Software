@@ -110,7 +110,13 @@ Creá un archivo `.env` basado en `.env.example`:
 # Google Gemini API Key - Gratis, necesaria para el módulo de IA Insights
 # Obtenela en: https://aistudio.google.com/apikey
 GEMINI_API_KEY=tu-clave-aqui
+
+# Turso (SQLite cloud) - solo necesario si usás base de datos remota
+TURSO_DATABASE_URL=libsql://tu-db.turso.io
+TURSO_AUTH_TOKEN=tu-token-aqui
 ```
+
+> **Nota**: En local se usa SQLite (`dev.db`). Turso se usa solo en producción (Vercel).
 
 ## 📝 Licencia
 

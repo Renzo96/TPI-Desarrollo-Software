@@ -128,6 +128,38 @@ stockwise/
 - La IA inicialmente no sabía que Prisma v7 requiere un adapter explícito
 - Se requirieron múltiples iteraciones para resolver la configuración de la base de datos
 - Se migró de OpenAI a Gemini por ser una alternativa gratuita para uso académico sin tarjeta de crédito
+- El deploy en Vercel falló por no generar el cliente de Prisma antes del build. Se solucionó con `postinstall` + `prisma generate` en el script de build
+- SQLite local no es compatible con Vercel (serverless, sin filesystem). Se migró a Turso (SQLite cloud) con adapter `@prisma/adapter-libsql`
+- La API de Gemini 2.0 Flash tiene límites de cuota gratuita que requieren manejo de errores
+
+---
+
+## 7. Checklist del Éxito ✅
+
+| # | Requisito | Estado |
+|---|-----------|--------|
+| 1 | Repo público creado y compartido con el docente | ✅ [github.com/Renzo96/TPI-Desarrollo-Software](https://github.com/Renzo96/TPI-Desarrollo-Software) |
+| 2 | Pipeline de CI/CD configurado (deploy automático en Vercel) | ✅ GitHub Actions → Vercel en cada push a `main` |
+| 3 | Informe de herramientas: ¿Qué prompt funcionó mejor? ¿En qué falló la IA? | ✅ Este documento |
+| 4 | Demo funcional: link directo para probar el sistema | ✅ [tpi-desarrollo-software-wpxy.vercel.app](https://tpi-desarrollo-software-wpxy.vercel.app) |
+
+### Funcionalidades del deploy
+
+| Funcionalidad | Estado |
+|--------------|--------|
+| Dashboard con métricas | ✅ Funcionando |
+| CRUD de productos | ✅ Funcionando |
+| Registro de movimientos | ✅ Funcionando |
+| Alertas de stock bajo | ✅ Funcionando |
+| IA Insights (Gemini 2.0 Flash) | ⚠️ Sujeto a cuota gratuita |
+| Modo oscuro | ✅ Funcionando |
+| Responsive design | ✅ Funcionando |
+
+### Base de datos en producción
+
+- **Turso** (SQLite cloud) con URL `libsql://desarrollo-software-tpi-renzo.aws-us-east-2.turso.io`
+- Adapter: `@prisma/adapter-libsql`
+- Schema: Product (11 columnas) + Movement (6 columnas) con relación FK
 
 ---
 
