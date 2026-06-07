@@ -18,13 +18,13 @@ El proyecto fue desarrollado como un **Trabajo Práctico Integrador** para la ma
 |-------------|-----|-------------------|
 | **Claude (Anthropic)** | Asistente principal | Generación de código, arquitectura, resolución de errores |
 | **OpenCode IDE** | Entorno de desarrollo | Integración con Claude para pair programming |
-| **OpenAI GPT-3.5 Turbo** | Motor de IA en la app | Análisis de inventario y generación de recomendaciones |
+| **Google Gemini 2.0 Flash** | Motor de IA en la app | Análisis de inventario y generación de recomendaciones (API gratuita) |
 
 ### Cómo se utilizó cada herramienta:
 
 - **Claude + OpenCode**: Actuó como pair programmer durante todo el desarrollo. Generó la estructura del proyecto, implementó las funcionalidades, y ayudó a resolver problemas de configuración (como la integración de Prisma v7 con SQLite y el driver adapter).
 
-- **OpenAI API**: Integrada directamente en la aplicación para el módulo de "IA Insights", donde analiza el estado del inventario y genera recomendaciones prácticas en español.
+- **Google Gemini API**: Integrada directamente en la aplicación para el módulo de "IA Insights". Se eligió por su capa gratuita generosa (1500 requests/día) que no requiere tarjeta de crédito, ideal para un proyecto académico.
 
 ---
 
@@ -98,7 +98,7 @@ stockwise/
 │   │   └── Navbar.tsx             # Navegación responsive
 │   └── lib/
 │       ├── prisma.ts              # Singleton del cliente Prisma
-│       └── openai.ts              # Cliente OpenAI + helpers de análisis
+│       └── openai.ts              # Cliente Gemini + helpers de análisis
 ├── .github/workflows/deploy.yml    # CI/CD con GitHub Actions
 ├── README.md                       # Documentación del proyecto
 └── INFORME_TECNICO.md             # Este informe
@@ -114,7 +114,7 @@ stockwise/
 > "Crear un proyecto Next.js con TypeScript, Tailwind, Prisma y SQLite para control de stock con IA"
 
 **Prompt de integración IA:**
-> "Analizar el inventario y generar recomendaciones prácticas en español usando GPT-3.5 Turbo"
+> "Analizar el inventario y generar recomendaciones prácticas en español usando Gemini 2.0 Flash"
 
 **Prompt de debugging:**
 > "El build falla con 'Module not found: Can't resolve @/generated/prisma' - ¿cómo se resuelve con Prisma v7?"
@@ -127,7 +127,7 @@ stockwise/
 ### Donde falló la IA:
 - La IA inicialmente no sabía que Prisma v7 requiere un adapter explícito
 - Se requirieron múltiples iteraciones para resolver la configuración de la base de datos
-- Algunas sugerencias de código necesitaron ajustes para cumplir con las convenciones de Next.js 16
+- Se migró de OpenAI a Gemini por ser una alternativa gratuita para uso académico sin tarjeta de crédito
 
 ---
 

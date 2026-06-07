@@ -1,35 +1,39 @@
-import OpenAI from "openai"
+import { GoogleGenerativeAI } from "@google/generative-ai"
 
-function getOpenAIClient(): OpenAI | null {
-  if (!process.env.OPENAI_API_KEY) return null
-  return new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+function getGeminiClient(): GoogleGenerativeAI | null {
+  if (!process.env.GEMINI_API_KEY) return null
+  return new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
 }
 
 export async function getAIInsight(prompt: string): Promise<string> {
-  const openai = getOpenAIClient()
-  if (!openai) {
-    return "⚠️ OPENAI_API_KEY no configurada. Agregala en .env para habilitar las funcionalidades de IA."
+  const genAI = getGeminiClient()
+  if (!genAI) {
+    return "⚠️ GEMINI_API_KEY no configurada. Obtenela gratis en https://aistudio.google.com/apikey y agregala en .env para habilitar las funcionalidades de IA."
   }
 
   try {
-    const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" })
+
+    const systemPrompt =
+      "Sos un asistente experto en gestion de inventario. Respondé en español, de forma concisa y práctica. Máximo 3 párrafos."
+
+    const result = await model.generateContent({
+      contents: [
         {
-          role: "system",
-          content:
-            "Sos un asistente experto en gestión de inventario. Respondé en español, de forma concisa y práctica. Máximo 3 párrafos.",
+          role: "user",
+          parts: [{ text: `${systemPrompt}\n\n${prompt}` }],
         },
-        { role: "user", content: prompt },
       ],
-      max_tokens: 300,
-      temperature: 0.7,
+      generationConfig: {
+        maxOutputTokens: 300,
+        temperature: 0.7,
+      },
     })
 
-    return completion.choices[0]?.message?.content ?? "Sin respuesta."
+    return result.response.text() || "Sin respuesta."
   } catch (error) {
-    console.error("OpenAI API error:", error)
-    return "❌ Error al contactar la API de OpenAI. Verificá tu clave y conexión."
+    console.error("Gemini API error:", error)
+    return "❌ Error al contactar la API de Gemini. Verificá tu clave y conexión."
   }
 }
 
@@ -42,7 +46,9 @@ export function analyzeStockLevels(
   }))
 }
 
-export function generateAIPrompt(products: { name: string; quantity: number; minStock: number; category: string }[]): string {
+export function generateAIPrompt(
+  products: { name: string; quantity: number; minStock: number; category: string }[]
+): string {
   const lowStock = products.filter((p) => p.quantity <= p.minStock)
   const outOfStock = products.filter((p) => p.quantity === 0)
 
@@ -53,11 +59,11 @@ export function generateAIPrompt(products: { name: string; quantity: number; min
   let prompt = `Analizá este inventario y dame recomendaciones prácticas:\n\n`
 
   if (outOfStock.length > 0) {
-    prompt += `🚨 PRODUCTOS SIN STOCK:\n${outOfStock.map((p) => `- ${p.name} (${p.category})`).join("\n")}\n\n`
+    prompt += `PRODUCTOS SIN STOCK:\n${outOfStock.map((p) => `- ${p.name} (${p.category})`).join("\n")}\n\n`
   }
 
   if (lowStock.length > 0) {
-    prompt += `⚠️ PRODUCTOS CON STOCK BAJO:\n${lowStock.map((p) => `- ${p.name}: ${p.quantity} unidades (mínimo: ${p.minStock})`).join("\n")}\n\n`
+    prompt += `PRODUCTOS CON STOCK BAJO:\n${lowStock.map((p) => `- ${p.name}: ${p.quantity} unidades (mínimo: ${p.minStock})`).join("\n")}\n\n`
   }
 
   const categories = [...new Set(products.map((p) => p.category))]

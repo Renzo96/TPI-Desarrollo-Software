@@ -25,7 +25,7 @@ StockWise es una aplicación web full-stack que permite gestionar el inventario 
 | **Base de datos** | [SQLite](https://www.sqlite.org/) + [Prisma 7](https://www.prisma.io/) |
 | **Iconos** | [Lucide React](https://lucide.dev/) |
 | **Notificaciones** | [React Hot Toast](https://react-hot-toast.com/) |
-| **IA** | [OpenAI API](https://platform.openai.com/) (GPT-3.5 Turbo) |
+| **IA** | [Google Gemini API](https://aistudio.google.com/) (Gemini 2.0 Flash) — **Gratis** |
 
 ## 🤖 IA Utilizada
 
@@ -43,7 +43,7 @@ Este proyecto fue desarrollado con la asistencia de **Claude (Anthropic)** a tra
 
 - Node.js 18+ 
 - npm 9+
-- Una API Key de OpenAI (opcional, solo para el módulo IA)
+- Una API Key de Google Gemini (gratis, solo para el módulo IA)
 
 ### Instalación
 
@@ -57,7 +57,8 @@ npm install
 
 # Configurar variables de entorno
 cp .env.example .env
-# Editar .env y agregar tu OPENAI_API_KEY (opcional)
+# Obtené una API Key gratis en https://aistudio.google.com/apikey
+# y agregala en .env como GEMINI_API_KEY
 
 # Generar el cliente de Prisma
 npx prisma generate
@@ -106,8 +107,9 @@ stockwise/
 Creá un archivo `.env` basado en `.env.example`:
 
 ```env
-# OpenAI API Key (opcional: necesaria solo para el módulo de IA Insights)
-OPENAI_API_KEY=sk-tu-clave-aqui
+# Google Gemini API Key - Gratis, necesaria para el módulo de IA Insights
+# Obtenela en: https://aistudio.google.com/apikey
+GEMINI_API_KEY=tu-clave-aqui
 ```
 
 ## 📝 Licencia
