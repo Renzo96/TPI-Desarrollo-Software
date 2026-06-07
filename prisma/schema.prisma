@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  sku         String   @unique
+  category    String
+  price       Float
+  quantity    Int      @default(0)
+  minStock    Int      @default(5)
+  unit        String   @default("unidad")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  movements   Movement[]
+}
+
+model Movement {
+  id        String   @id @default(cuid())
+  type      String
+  quantity  Int
+  reason    String?
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
