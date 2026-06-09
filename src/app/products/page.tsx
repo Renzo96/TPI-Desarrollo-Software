@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma"
-import { deleteProduct } from "@/app/actions"
 import Link from "next/link"
-import { Package, Search, Plus, Pencil, Trash2 } from "lucide-react"
+import { Package, Search, Plus, Pencil } from "lucide-react"
+import DeleteProductButton from "@/components/DeleteProductButton"
 
 export const dynamic = "force-dynamic"
 
@@ -117,17 +117,7 @@ export default async function ProductsPage() {
                           >
                             <Pencil className="w-4 h-4" />
                           </Link>
-                          <form action={deleteProduct.bind(null, product.id)}>
-                            <button
-                              type="submit"
-                              className="p-2 rounded-lg text-zinc-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
-                              onClick={(e) => {
-                                if (!confirm("¿Eliminar este producto?")) e.preventDefault()
-                              }}
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          </form>
+                          <DeleteProductButton id={product.id} />
                         </div>
                       </td>
                     </tr>
